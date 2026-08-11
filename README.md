@@ -31,6 +31,7 @@ npm run start   # node .output/server/index.mjs
 2. Compute a `HashCheck` and POST a payment request — e.g. with Node:
 
    ```js
+   import { createHash } from 'node:crypto'
    const { createHash } = require('node:crypto')
    const privateKey = 'TestPrivateKey12345'
    const fields = {
