@@ -133,11 +133,43 @@ CreatedDate, PaymentDate`.
 
 Same auth and same shape, single object. `404` if not found, `401` if `ApiKey` doesn't match.
 
+## Integrating from a chat/app frontend (e.g. WhatsApp)
+
+Ozow's contract assumes a browser: the payment request is a POST, and the customer is redirected through a hosted
+page. A chat frontend like WhatsApp can't submit a POST from a tapped link, so a plain "give me a GET link" shortcut
+isn't part of Ozow's real contract — this mock deliberately doesn't add one either, to stay faithful. Instead:
+
+1. **Payment step happens in VAS, before the gateway is involved.** Ozow has no "choose a provider" step — its bank
+   list is picking a bank to pay *from*, not picking a gateway. If your VAS bot supports multiple payment methods,
+   that choice is made in your own conversation logic. Once Ozow/EFT is chosen, VAS creates an internal order and
+   mints its own `TransactionReference` — this is the correlator you'll need on the way back.
+2. VAS's backend computes `HashCheck` server-side and gives the WhatsApp frontend a link to a small **bridge page it
+   hosts itself** (e.g. `https://vas-api.example.com/checkout/{orderId}`), not a link into this gateway directly.
+   That bridge page's only job is to auto-submit the signed POST when opened — this is what turns "POST-only" into a
+   tappable link.
+3. Customer taps the link → bridge page auto-POSTs the payment request → customer lands on the hosted payment page,
+   picks a bank, resolves the outcome.
+4. From there, two callbacks fire, and they're not equally reliable:
+   - Browser redirect to `SuccessUrl`/`CancelUrl`/`ErrorUrl` — best-effort; the customer might just close the tab.
+     Usually just a "you can return to WhatsApp now" page, optionally ending in a `wa.me` deep link back into the chat.
+   - `NotifyUrl`, server-to-server, hash-verified — this is the one to actually trust.
+5. On a verified `NotifyUrl` call, VAS looks up the order by `TransactionReference` (or the gateway's own
+   `TransactionId`), marks it paid, and proactively messages the customer back via the WhatsApp Business API using
+   the phone number already on file for that conversation.
+
+None of this needs anything extra from this mock — the bridge page and the WhatsApp messaging live entirely on the
+VAS side, and the field names/hashes above are exactly what they'd use to build both.
+
 ## What's intentionally different from real Ozow
 
 - Only `ZAR`/`ZA` is accepted (matches Ozow's current live scope, so this isn't a mock-only limitation).
 - No real bank list/login — you explicitly pick the outcome on the fake payment page (this mirrors Ozow's own
-  `IsTest=true` sandbox behaviour, which also drops you on an outcome-picker instead of doing real banking).
+  `IsTest=true` sandbox behaviour, which also drops you on an outcome-picker instead of doing real banking). Unlike
+  real Ozow, this mock shows that picker for every transaction regardless of `IsTest` — there's no real banking path
+  to fall back to, so `IsTest=false` behaves the same as `IsTest=true` here.
+- This only covers Ozow's public hosted-redirect contract (Post Payment Request / HashCheck / NotifyUrl / status
+  lookups). Ozow also has a separate, more direct "Payment API" that's gated behind an application process and isn't
+  publicly documented — this mock doesn't attempt to replicate that one.
 - Only JSON responses from the status endpoints (real Ozow also offers XML via `Accept`).
 - Merchants are self-service via `/admin` instead of Ozow's merchant portal — since there's no real Ozow account
   behind this, you register your own `SiteCode`/`PrivateKey`/`ApiKey` locally.
