@@ -1,0 +1,200 @@
+
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+}
+
+main {
+  width: min(42rem, calc(100% - 2rem));
+  margin: 4rem auto;
+}
+
+body {
+  background: #f4f6f8;
+  color: #1a2332;
+}
+
+.badge-mock {
+  display: inline-block;
+  background: #ffedd5;
+  color: #9a3412;
+  border: 1px solid #fdba74;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  margin-bottom: 1rem;
+}
+
+h1 {
+  margin-top: 0.25rem;
+}
+
+a {
+  color: #0f766e;
+}
+
+.landing ul {
+  padding-left: 1.2rem;
+}
+
+.pay-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.pay-card {
+  background: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 8px 24px rgba(0, 0, 0, 0.06);
+  padding: 2rem;
+  width: 100%;
+  max-width: 26rem;
+}
+
+.pay-amount {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: #0f766e;
+  margin: 0.25rem 0 1.5rem;
+}
+
+.pay-meta {
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-content: center;
+  gap: 0.25rem 0.75rem;
+  font-size: 0.875rem;
+  color: #4b5563;
+  margin-bottom: 1.5rem;
+}
+
+.pay-meta dt {
+  font-weight: 600;
+  text-align: right;
+}
+
+.pay-meta dd {
+  margin: 0;
+  text-align: left;
+}
+
+.bank-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.bank-btn {
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid #d1d5db;
+  background: #f9fafb;
+  cursor: pointer;
+  font-size: 1rem;
+  text-align: left;
+}
+
+.bank-btn:hover {
+  border-color: #0f766e;
+  background: #f0fdfa;
+}
+
+.outcome-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin: 1rem 0;
+}
+
+.btn {
+  padding: 0.7rem 1rem;
+  border-radius: 0.5rem;
+  border: none;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  color: #fff;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-success {
+  background: #16a34a;
+}
+
+.btn-secondary {
+  background: #6b7280;
+}
+
+.btn-danger {
+  background: #dc2626;
+}
+
+.link-btn {
+  background: none;
+  border: none;
+  color: #0f766e;
+  cursor: pointer;
+  font-size: 0.875rem;
+  padding: 0.5rem;
+}
+
+.nozow-error {
+  width: min(36rem, calc(100% - 2rem));
+  margin: 4rem auto;
+}
+
+.admin-page section {
+  margin-bottom: 2.5rem;
+}
+
+.table-scroll {
+  overflow-x: auto;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 0.875rem;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid #e5e7eb;
+  white-space: nowrap;
+}
+
+code {
+  background: #f1f5f9;
+  padding: 0.1rem 0.35rem;
+  border-radius: 0.25rem;
+  font-size: 0.85em;
+}
+
+.inline-form {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.inline-form input {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  flex: 1;
+}
+
